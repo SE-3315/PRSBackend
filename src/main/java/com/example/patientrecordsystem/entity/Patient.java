@@ -16,6 +16,29 @@ public class Patient {
     @GeneratedValue
     private UUID id;
 
+    public Patient(UUID id, String firstName, String lastName, String nationalId, LocalDate birthDate, String gender, String phone, String email, String address, String bloodType, String allergies, String chronicConditions, String insuranceProvider, String insuranceNumber, String emergencyContactName, String emergencyContactPhone, Doctor primaryDoctor, Department department, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nationalId = nationalId;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.bloodType = bloodType;
+        this.allergies = allergies;
+        this.chronicConditions = chronicConditions;
+        this.insuranceProvider = insuranceProvider;
+        this.insuranceNumber = insuranceNumber;
+        this.emergencyContactName = emergencyContactName;
+        this.emergencyContactPhone = emergencyContactPhone;
+        this.primaryDoctor = primaryDoctor;
+        this.department = department;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     private String firstName;
     private String lastName;
 
@@ -55,6 +78,10 @@ public class Patient {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public Patient() {
+
+    }
 
     public UUID getId() {
         return id;

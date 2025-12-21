@@ -9,6 +9,17 @@ import java.util.UUID;
 @Entity
 @Table(name = "prescriptions")
 public class Prescription {
+    public Prescription(UUID id, Patient patient, Doctor doctor, String medicationName, String dosage, String frequency, String duration, String instructions, Instant issuedAt) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.medicationName = medicationName;
+        this.dosage = dosage;
+        this.frequency = frequency;
+        this.duration = duration;
+        this.instructions = instructions;
+        this.issuedAt = issuedAt;
+    }
 
     @Id @GeneratedValue
     private UUID id;
@@ -30,6 +41,10 @@ public class Prescription {
     private String instructions;
 
     private Instant issuedAt;
+
+    public Prescription() {
+
+    }
 
     public UUID getId() {
         return id;

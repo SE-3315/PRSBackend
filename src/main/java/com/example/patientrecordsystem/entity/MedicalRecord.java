@@ -9,6 +9,15 @@ import java.util.UUID;
 @Entity
 @Table(name = "medical_records")
 public class MedicalRecord {
+    public MedicalRecord(UUID id, Patient patient, Doctor doctor, String recordType, String description, String attachments, Instant createdAt) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.recordType = recordType;
+        this.description = description;
+        this.attachments = attachments;
+        this.createdAt = createdAt;
+    }
 
     @Id @GeneratedValue
     private UUID id;
@@ -30,6 +39,10 @@ public class MedicalRecord {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    public MedicalRecord() {
+
+    }
 
     public UUID getId() {
         return id;

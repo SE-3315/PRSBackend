@@ -5,13 +5,10 @@ import com.example.patientrecordsystem.dto.LoginRequest;
 import com.example.patientrecordsystem.dto.RegisterRequest;
 import com.example.patientrecordsystem.entity.User;
 import com.example.patientrecordsystem.repository.UserRepository;
-import com.example.patientrecordsystem.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
-
-import java.util.Map;
 
 @Service
 public class AuthService {
@@ -43,7 +40,7 @@ public class AuthService {
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
             throw new NotFoundException("Invalid email or password");
         }
-        String token = jwtService.generateAccessToken(user.getEmail(), user.getRole());
+        String token = jwtService.generateToken(user.getEmail());
         return new AuthResponse(token, "Bearer");
     }
 }

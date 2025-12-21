@@ -1,12 +1,13 @@
 package com.example.patientrecordsystem.config;
 
-import com.example.patientrecordsystem.config.JwtProperties;
-import com.example.patientrecordsystem.security.JwtAuthFilter;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import com.example.patientrecordsystem.config.JwtAuthFilter;
+import com.example.patientrecordsystem.repository.UserRepository;
+import com.example.patientrecordsystem.service.AuthService;
+import com.example.patientrecordsystem.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,26 +16,34 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults())
-                .build();
+    public JwtAuthFilter jwtAuthFilter(JwtService jwtService, UserRepository userRepository) {
+        return new JwtAuthFilter(jwtService, userRepository);
     }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           JwtAuthFilter jwtAuthFilter) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/api-docs/**", "/swagger-ui/**", "/api/pay/**", "/api/bill/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class DepartmentService {
         if (departmentRepository.existsByNameIgnoreCase(req.name())) {
             throw new IllegalArgumentException("Department name already exists");
         }
-        Department d = new Department(req.name().trim(), req.description(), req.isActive());
+        Department d = new Department(req.name(), req.description(), req.isActive());
         Department saved = departmentRepository.save(d);
         return toResponse(saved);
     }

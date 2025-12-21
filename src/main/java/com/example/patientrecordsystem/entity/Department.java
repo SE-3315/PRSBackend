@@ -11,6 +11,11 @@ import java.util.UUID;
 @Entity
 @Table(name = "departments")
 public class Department {
+    public Department(String name, String description, Boolean isActive) {
+        this.name = name;
+        this.description = description;
+        this.isActive = isActive;
+    }
 
     @Id @GeneratedValue
     private UUID id;
@@ -29,7 +34,9 @@ public class Department {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    public Department(String trim, String description, Boolean active) {
+
+    public Department() {
+
     }
 
     public UUID getId() {
