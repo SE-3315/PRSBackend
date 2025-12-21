@@ -6,6 +6,7 @@ import com.example.patientrecordsystem.dto.RegisterRequest;
 import com.example.patientrecordsystem.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,9 +20,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void register(@Valid @RequestBody RegisterRequest req) {
-        authService.register(req);
+    public ResponseEntity<?> register(
+            @Valid @RequestBody RegisterRequest request
+    ) {
+        authService.register(request);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
@@ -29,3 +32,4 @@ public class AuthController {
         return authService.login(req);
     }
 }
+

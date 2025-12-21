@@ -10,6 +10,18 @@ import java.util.UUID;
 @Table(name = "patient_visits")
 public class PatientVisit {
 
+    public PatientVisit(UUID id, Patient patient, Doctor doctor, Instant visitDate, String symptoms, String diagnosis, String treatmentPlan, String notes, Instant createdAt) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.visitDate = visitDate;
+        this.symptoms = symptoms;
+        this.diagnosis = diagnosis;
+        this.treatmentPlan = treatmentPlan;
+        this.notes = notes;
+        this.createdAt = createdAt;
+    }
+
     @Id @GeneratedValue
     private UUID id;
 
@@ -36,6 +48,10 @@ public class PatientVisit {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    public PatientVisit() {
+
+    }
 
     public UUID getId() {
         return id;

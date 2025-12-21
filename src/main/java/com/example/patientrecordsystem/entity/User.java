@@ -35,9 +35,21 @@ public class User {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    public User(String email, String hash, String firstName, String lastName, String role, String phone) {
-    }
+    public User() {}
 
+    public User(String email,
+                String passwordHash,
+                String firstName,
+                String lastName,
+                String role,
+                String phone) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.phone = phone;
+    }
     public UUID getId() {
         return id;
     }

@@ -10,6 +10,17 @@ import java.util.UUID;
 @Entity
 @Table(name = "appointments")
 public class Appointment {
+    public Appointment(UUID id, Patient patient, Doctor doctor, Department department, Instant appointmentDate, String status, String reason, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.department = department;
+        this.appointmentDate = appointmentDate;
+        this.status = status;
+        this.reason = reason;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     @Id @GeneratedValue
     private UUID id;
@@ -37,6 +48,10 @@ public class Appointment {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public Appointment() {
+
+    }
 
     public UUID getId() {
         return id;

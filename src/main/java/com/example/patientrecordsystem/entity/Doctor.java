@@ -11,6 +11,22 @@ import java.util.UUID;
 @Table(name = "doctors")
 public class Doctor {
 
+    public Doctor(UUID id, User user, Department department, String licenseNumber, String specialization, String phone, String email, String roomNumber, String workingHours, String biography, Boolean isActive, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.user = user;
+        this.department = department;
+        this.licenseNumber = licenseNumber;
+        this.specialization = specialization;
+        this.phone = phone;
+        this.email = email;
+        this.roomNumber = roomNumber;
+        this.workingHours = workingHours;
+        this.biography = biography;
+        this.isActive = isActive;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @Id @GeneratedValue
     private UUID id;
 
@@ -42,6 +58,10 @@ public class Doctor {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public Doctor() {
+
+    }
 
     public UUID getId() {
         return id;
