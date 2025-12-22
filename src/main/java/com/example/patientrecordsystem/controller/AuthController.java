@@ -3,10 +3,13 @@ package com.example.patientrecordsystem.controller;
 import com.example.patientrecordsystem.dto.AuthResponse;
 import com.example.patientrecordsystem.dto.LoginRequest;
 import com.example.patientrecordsystem.dto.RegisterRequest;
+import com.example.patientrecordsystem.dto.UserResponse;
+import com.example.patientrecordsystem.entity.User;
 import com.example.patientrecordsystem.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -48,6 +51,23 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest req) {
         return authService.login(req);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = (User) authentication.getPrincipal();
+        UserResponse response = new UserResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getRole(),
+                user.getPhone()
+        );
+        return ResponseEntity.ok(response);
     }
 }
 
