@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
+/**
+ * DTO used to create a doctor record.
+ */
 public record DoctorCreateRequest(
         @NotNull UUID userId,
         @NotNull UUID departmentId,

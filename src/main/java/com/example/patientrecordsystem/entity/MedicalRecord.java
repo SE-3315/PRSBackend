@@ -2,10 +2,20 @@ package com.example.patientrecordsystem.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.Instant;
 import java.util.UUID;
-
+/**
+ * JPA entity representing a patient's medical record entry.
+ *
+ * <p>Holds record type, description, attachments and references to patient and doctor.
+ */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "medical_records")
 public class MedicalRecord {

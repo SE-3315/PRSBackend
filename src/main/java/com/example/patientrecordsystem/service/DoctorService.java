@@ -14,6 +14,11 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service that manages doctor records.
+ *
+ * <p>Provides create, list, require and delete operations and maps entities to DTOs.
+ */
 @Service
 public class DoctorService {
 
@@ -27,6 +32,14 @@ public class DoctorService {
         this.departmentService = departmentService;
     }
 
+    /**
+     * Creates a new doctor record.
+     *
+     * @param req the doctor creation request with user, department and license information
+     * @return the created doctor response
+     * @throws IllegalArgumentException if license number already exists
+     * @throws NotFoundException if user or department is not found
+     */
     @Transactional
     public DoctorResponse create(DoctorCreateRequest req) {
         if (doctorRepository.existsByLicenseNumber(req.licenseNumber())) {
@@ -52,16 +65,34 @@ public class DoctorService {
         return toResponse(doctorRepository.save(d));
     }
 
+    /**
+     * Lists all doctors.
+     *
+     * @return a list of all doctor responses
+     */
     @Transactional(readOnly = true)
     public List<DoctorResponse> list() {
         return doctorRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Retrieves a doctor by id (internal use).
+     *
+     * @param id the doctor id
+     * @return the doctor entity
+     * @throws NotFoundException if doctor is not found
+     */
     @Transactional(readOnly = true)
     public Doctor require(UUID id) {
         return doctorRepository.findById(id).orElseThrow(() -> new NotFoundException("Doctor not found"));
     }
 
+    /**
+     * Deletes a doctor.
+     *
+     * @param id the doctor id
+     * @throws NotFoundException if doctor is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!doctorRepository.existsById(id)) throw new NotFoundException("Doctor not found");

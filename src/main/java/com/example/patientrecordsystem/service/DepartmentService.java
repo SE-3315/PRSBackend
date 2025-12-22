@@ -12,6 +12,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service that manages departments.
+ *
+ * <p>Supports creating, listing, and deleting departments and converting to response DTOs.
+ */
 @Service
 public class DepartmentService {
 
@@ -21,6 +26,13 @@ public class DepartmentService {
         this.departmentRepository = departmentRepository;
     }
 
+    /**
+     * Creates a new department.
+     *
+     * @param req the department creation request
+     * @return the created department response
+     * @throws IllegalArgumentException if department name already exists
+     */
     @Transactional
     public DepartmentResponse create(DepartmentCreateRequest req) {
         if (departmentRepository.existsByNameIgnoreCase(req.name())) {
@@ -31,16 +43,34 @@ public class DepartmentService {
         return toResponse(saved);
     }
 
+    /**
+     * Lists all departments.
+     *
+     * @return a list of all department responses
+     */
     @Transactional(readOnly = true)
     public List<DepartmentResponse> list() {
         return departmentRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Retrieves a department by id (internal use).
+     *
+     * @param id the department id
+     * @return the department entity
+     * @throws NotFoundException if department is not found
+     */
     @Transactional(readOnly = true)
     public Department require(UUID id) {
         return departmentRepository.findById(id).orElseThrow(() -> new NotFoundException("Department not found"));
     }
 
+    /**
+     * Deletes a department.
+     *
+     * @param id the department id
+     * @throws NotFoundException if department is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!departmentRepository.existsById(id)) throw new NotFoundException("Department not found");

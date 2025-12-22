@@ -2,12 +2,22 @@ package com.example.patientrecordsystem.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
-
+/**
+ * JPA entity representing a medical department.
+ *
+ * <p>Stores department name, description, active flag and auditing timestamps.
+ */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "departments")
 public class Department {
@@ -38,6 +48,7 @@ public class Department {
     public Department() {
 
     }
+
 
     public UUID getId() {
         return id;

@@ -2,20 +2,25 @@ package com.example.patientrecordsystem.config;
 
 import com.example.patientrecordsystem.entity.User;
 import com.example.patientrecordsystem.repository.UserRepository;
-import com.example.patientrecordsystem.service.AuthService;
 import com.example.patientrecordsystem.service.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
+
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * Servlet filter that validates JWT tokens provided in the HTTP `Authorization` header
+ * and sets the Spring Security context accordingly.
+ *
+ * <p>The filter extracts the bearer token, resolves the user email from the token using
+ * {@link com.example.patientrecordsystem.service.JwtService} and loads user details from
+ * {@link com.example.patientrecordsystem.repository.UserRepository}.
+ */
 public class JwtAuthFilter extends GenericFilter {
 
     private final JwtService jwtService;

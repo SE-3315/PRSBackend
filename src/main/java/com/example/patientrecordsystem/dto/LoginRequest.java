@@ -4,6 +4,9 @@ package com.example.patientrecordsystem.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * Login request payload used for user authentication.
+ */
 public record LoginRequest(
         @Email @NotBlank String email,
         @NotBlank String password

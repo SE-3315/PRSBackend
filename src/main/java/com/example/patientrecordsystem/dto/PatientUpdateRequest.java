@@ -3,6 +3,9 @@ package com.example.patientrecordsystem.dto;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * DTO used to update patient information.
+ */
 public record PatientUpdateRequest(
         String firstName,
         String lastName,
