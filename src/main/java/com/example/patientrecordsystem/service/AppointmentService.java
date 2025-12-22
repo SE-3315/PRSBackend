@@ -14,6 +14,12 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service handling business logic for appointments.
+ *
+ * <p>Provides create, update, retrieve, list and delete operations and converts
+ * between entities and DTOs.
+ */
 @Service
 public class AppointmentService {
 
@@ -29,6 +35,13 @@ public class AppointmentService {
         this.departmentService = departmentService;
     }
 
+    /**
+     * Creates a new appointment.
+     *
+     * @param req the appointment creation request containing patient, doctor, department and appointment details
+     * @return the created appointment response
+     * @throws NotFoundException if patient, doctor or department is not found
+     */
     @Transactional
     public AppointmentResponse create(AppointmentCreateOrUpdateRequest req) {
         Appointment a = new Appointment();
@@ -36,6 +49,14 @@ public class AppointmentService {
         return toResponse(appointmentRepository.save(a));
     }
 
+    /**
+     * Updates an existing appointment.
+     *
+     * @param id the appointment id
+     * @param req the appointment update request
+     * @return the updated appointment response
+     * @throws NotFoundException if appointment, patient, doctor or department is not found
+     */
     @Transactional
     public AppointmentResponse update(UUID id, AppointmentCreateOrUpdateRequest req) {
         Appointment a = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("Appointment not found"));
@@ -43,17 +64,35 @@ public class AppointmentService {
         return toResponse(appointmentRepository.save(a));
     }
 
+    /**
+     * Retrieves an appointment by id.
+     *
+     * @param id the appointment id
+     * @return the appointment response
+     * @throws NotFoundException if appointment is not found
+     */
     @Transactional(readOnly = true)
     public AppointmentResponse get(UUID id) {
         return appointmentRepository.findById(id).map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Appointment not found"));
     }
 
+    /**
+     * Lists all appointments.
+     *
+     * @return a list of all appointment responses
+     */
     @Transactional(readOnly = true)
     public List<AppointmentResponse> list() {
         return appointmentRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Deletes an appointment.
+     *
+     * @param id the appointment id
+     * @throws NotFoundException if appointment is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!appointmentRepository.existsById(id)) throw new NotFoundException("Appointment not found");

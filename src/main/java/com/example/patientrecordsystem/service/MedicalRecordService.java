@@ -13,6 +13,11 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service for managing medical records.
+ *
+ * <p>Provides CRUD operations and maps between entities and DTOs.
+ */
 @Service
 public class MedicalRecordService {
 
@@ -26,6 +31,13 @@ public class MedicalRecordService {
         this.doctorService = doctorService;
     }
 
+    /**
+     * Creates a new medical record.
+     *
+     * @param req the medical record creation request
+     * @return the created medical record response
+     * @throws NotFoundException if patient or doctor is not found
+     */
     @Transactional
     public MedicalRecordResponse create(MedicalRecordCreateOrUpdateRequest req) {
         MedicalRecord r = new MedicalRecord();
@@ -33,6 +45,14 @@ public class MedicalRecordService {
         return toResponse(recordRepository.save(r));
     }
 
+    /**
+     * Updates an existing medical record.
+     *
+     * @param id the medical record id
+     * @param req the medical record update request
+     * @return the updated medical record response
+     * @throws NotFoundException if record, patient or doctor is not found
+     */
     @Transactional
     public MedicalRecordResponse update(UUID id, MedicalRecordCreateOrUpdateRequest req) {
         MedicalRecord r = recordRepository.findById(id).orElseThrow(() -> new NotFoundException("Medical record not found"));
@@ -40,17 +60,35 @@ public class MedicalRecordService {
         return toResponse(recordRepository.save(r));
     }
 
+    /**
+     * Retrieves a medical record by id.
+     *
+     * @param id the medical record id
+     * @return the medical record response
+     * @throws NotFoundException if medical record is not found
+     */
     @Transactional(readOnly = true)
     public MedicalRecordResponse get(UUID id) {
         return recordRepository.findById(id).map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Medical record not found"));
     }
 
+    /**
+     * Lists all medical records.
+     *
+     * @return a list of all medical record responses
+     */
     @Transactional(readOnly = true)
     public List<MedicalRecordResponse> list() {
         return recordRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Deletes a medical record.
+     *
+     * @param id the medical record id
+     * @throws NotFoundException if medical record is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!recordRepository.existsById(id)) throw new NotFoundException("Medical record not found");

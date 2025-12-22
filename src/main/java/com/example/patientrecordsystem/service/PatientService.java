@@ -16,6 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service managing patient entities and related business logic.
+ *
+ * <p>Supports create, update, retrieve, list, delete and helper methods to require entities.
+ */
 @Service
 public class PatientService {
 
@@ -29,6 +34,14 @@ public class PatientService {
         this.departmentService = departmentService;
     }
 
+    /**
+     * Creates a new patient.
+     *
+     * @param req the patient creation request with personal and medical details
+     * @return the created patient response
+     * @throws IllegalArgumentException if national ID is not unique
+     * @throws NotFoundException if primary doctor or department is not found
+     */
     @Transactional
     public PatientResponse create(PatientCreateRequest req) {
         if (req.nationalId() != null && patientRepository.existsByNationalId(req.nationalId())) {
@@ -39,6 +52,15 @@ public class PatientService {
         return toResponse(patientRepository.save(p));
     }
 
+    /**
+     * Updates an existing patient.
+     *
+     * @param id the patient id
+     * @param req the patient update request
+     * @return the updated patient response
+     * @throws IllegalArgumentException if national ID is not unique
+     * @throws NotFoundException if patient, primary doctor or department is not found
+     */
     @Transactional
     public PatientResponse update(UUID id, PatientCreateRequest req) {
         Patient p = patientRepository.findById(id).orElseThrow(() -> new NotFoundException("Patient not found"));
@@ -49,23 +71,48 @@ public class PatientService {
         return toResponse(patientRepository.save(p));
     }
 
+    /**
+     * Retrieves a patient by id.
+     *
+     * @param id the patient id
+     * @return the patient response
+     * @throws NotFoundException if patient is not found
+     */
     @Transactional(readOnly = true)
     public PatientResponse get(UUID id) {
         return patientRepository.findById(id).map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Patient not found"));
     }
 
+    /**
+     * Lists all patients.
+     *
+     * @return a list of all patient responses
+     */
     @Transactional(readOnly = true)
     public List<PatientResponse> list() {
         return patientRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Deletes a patient.
+     *
+     * @param id the patient id
+     * @throws NotFoundException if patient is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!patientRepository.existsById(id)) throw new NotFoundException("Patient not found");
         patientRepository.deleteById(id);
     }
 
+    /**
+     * Retrieves a patient by id (internal use).
+     *
+     * @param id the patient id
+     * @return the patient entity
+     * @throws NotFoundException if patient is not found
+     */
     @Transactional(readOnly = true)
     public Patient require(UUID id) {
         return patientRepository.findById(id).orElseThrow(() -> new NotFoundException("Patient not found"));

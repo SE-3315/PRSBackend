@@ -16,6 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+/**
+ * Spring Security configuration for the application.
+ *
+ * <p>Defines the security filter chain, registers the JWT authentication filter, provides
+ * an {@link org.springframework.security.authentication.AuthenticationManager} bean and a
+ * password encoder.
+ */
 public class SecurityConfig {
 
     @Bean
@@ -28,7 +35,8 @@ public class SecurityConfig {
                                            JwtAuthFilter jwtAuthFilter) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api-docs/**", "/swagger-ui/**", "/api/pay/**", "/api/bill/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/v3/api-docs/**",
+                                "/swagger-ui.html", "/swagger-ui/**", "/api/pay/**", "/api/bill/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * Service responsible for JWT token generation and parsing.
+ *
+ * <p>Uses application properties for secret and expiration to sign and validate tokens.
+ */
 @Service
 public class JwtService {
     @Value("${jwt.secret}")
@@ -19,6 +24,12 @@ public class JwtService {
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
+    /**
+     * Generates a JWT token for the given email.
+     *
+     * @param email the email to encode in the token subject
+     * @return the signed JWT token
+     */
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -29,6 +40,12 @@ public class JwtService {
     }
 
 
+    /**
+     * Extracts the email (subject) from a JWT token.
+     *
+     * @param token the JWT token
+     * @return the email encoded in the token
+     */
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

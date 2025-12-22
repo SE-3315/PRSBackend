@@ -13,6 +13,11 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service handling patient visit business operations.
+ *
+ * <p>Handles create, update, retrieval and deletion of patient visits.
+ */
 @Service
 public class PatientVisitService {
 
@@ -26,6 +31,13 @@ public class PatientVisitService {
         this.doctorService = doctorService;
     }
 
+    /**
+     * Creates a new patient visit record.
+     *
+     * @param req the patient visit creation request
+     * @return the created patient visit response
+     * @throws NotFoundException if patient or doctor is not found
+     */
     @Transactional
     public PatientVisitResponse create(PatientVisitCreateOrUpdateRequest req) {
         PatientVisit v = new PatientVisit();
@@ -33,6 +45,14 @@ public class PatientVisitService {
         return toResponse(visitRepository.save(v));
     }
 
+    /**
+     * Updates an existing patient visit.
+     *
+     * @param id the patient visit id
+     * @param req the patient visit update request
+     * @return the updated patient visit response
+     * @throws NotFoundException if visit, patient or doctor is not found
+     */
     @Transactional
     public PatientVisitResponse update(UUID id, PatientVisitCreateOrUpdateRequest req) {
         PatientVisit v = visitRepository.findById(id).orElseThrow(() -> new NotFoundException("Visit not found"));
@@ -40,17 +60,35 @@ public class PatientVisitService {
         return toResponse(visitRepository.save(v));
     }
 
+    /**
+     * Retrieves a patient visit by id.
+     *
+     * @param id the patient visit id
+     * @return the patient visit response
+     * @throws NotFoundException if visit is not found
+     */
     @Transactional(readOnly = true)
     public PatientVisitResponse get(UUID id) {
         return visitRepository.findById(id).map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Visit not found"));
     }
 
+    /**
+     * Lists all patient visits.
+     *
+     * @return a list of all patient visit responses
+     */
     @Transactional(readOnly = true)
     public List<PatientVisitResponse> list() {
         return visitRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Deletes a patient visit.
+     *
+     * @param id the patient visit id
+     * @throws NotFoundException if visit is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!visitRepository.existsById(id)) throw new NotFoundException("Visit not found");

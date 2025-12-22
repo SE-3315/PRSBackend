@@ -1,12 +1,23 @@
 package com.example.patientrecordsystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
-
+/**
+ * JPA entity representing an appointment between a patient and a doctor.
+ *
+ * <p>Contains references to the patient, doctor and department, the scheduled date,
+ * status and a textual reason. Auditing timestamps are captured for creation and update.
+ */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "appointments")
 public class Appointment {

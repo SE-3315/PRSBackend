@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * DTO to create or update a patient visit record.
+ */
 public record PatientVisitCreateOrUpdateRequest(
         @NotNull UUID patientId,
         @NotNull UUID doctorId,

@@ -2,10 +2,20 @@ package com.example.patientrecordsystem.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.UUID;
-
+/**
+ * JPA entity representing a prescription issued to a patient.
+ *
+ * <p>Includes medication details, dosing information, instructions and issuance timestamp.
+ */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "prescriptions")
 public class Prescription {
