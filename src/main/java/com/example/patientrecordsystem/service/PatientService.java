@@ -5,10 +5,7 @@ import com.example.patientrecordsystem.dto.PatientResponse;
 import com.example.patientrecordsystem.entity.Department;
 import com.example.patientrecordsystem.entity.Doctor;
 import com.example.patientrecordsystem.entity.Patient;
-import com.example.patientrecordsystem.repository.MedicalRecordRepository;
-import com.example.patientrecordsystem.repository.PatientRepository;
-import com.example.patientrecordsystem.repository.PatientVisitRepository;
-import com.example.patientrecordsystem.repository.PrescriptionRepository;
+import com.example.patientrecordsystem.repository.*;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,16 +27,17 @@ public class PatientService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final PatientVisitRepository patientVisitRepository;
     private final PrescriptionRepository prescriptionRepository;
+    private final AppointmentRepository appointmentRepository;
 
 
-    public PatientService(PatientRepository patientRepository, DoctorService doctorService, DepartmentService departmentService, MedicalRecordRepository medicalRecordRepository, PatientVisitRepository patientVisitRepository, PrescriptionRepository prescriptionRepository) {
+    public PatientService(PatientRepository patientRepository, DoctorService doctorService, DepartmentService departmentService, MedicalRecordRepository medicalRecordRepository, PatientVisitRepository patientVisitRepository, PrescriptionRepository prescriptionRepository, AppointmentRepository appointmentRepository) {
         this.patientRepository = patientRepository;
         this.doctorService = doctorService;
         this.departmentService = departmentService;
         this.medicalRecordRepository = medicalRecordRepository;
         this.patientVisitRepository = patientVisitRepository;
-
         this.prescriptionRepository = prescriptionRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     /**
@@ -111,6 +109,7 @@ public class PatientService {
     @Transactional
     public void delete(UUID id) {
         if (!patientRepository.existsById(id)) throw new NotFoundException("Patient not found");
+        appointmentRepository.deleteByPatient_Id(id);
         prescriptionRepository.deleteByPatient_Id(id);
         patientVisitRepository.deleteByPatient_Id(id);
         medicalRecordRepository.deleteByPatient_Id(id);
