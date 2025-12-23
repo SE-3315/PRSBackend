@@ -14,8 +14,6 @@ import java.util.UUID;
  * <p>Includes medication details, dosing information, instructions and issuance timestamp.
  */
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "prescriptions")
 public class Prescription {
