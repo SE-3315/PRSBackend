@@ -5,4 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
+/**
+ * Spring Data JPA repository for {@link com.example.patientrecordsystem.entity.MedicalRecord} entities.
+ */
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, UUID> {}

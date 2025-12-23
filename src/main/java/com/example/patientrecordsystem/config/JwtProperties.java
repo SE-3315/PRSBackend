@@ -3,6 +3,12 @@ package com.example.patientrecordsystem.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "jwt")
+/**
+ * Configuration properties for JWT handling.
+ *
+ * <p>Properties are bound from configuration using the prefix {@code jwt} and include
+ * the secret key, the token issuer and access token lifetime in minutes.
+ */
 public class JwtProperties {
 
     private String secret;

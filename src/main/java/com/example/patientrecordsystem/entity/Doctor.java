@@ -1,13 +1,26 @@
 package com.example.patientrecordsystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
 
+
+/**
+ * JPA entity representing a doctor in the system.
+ *
+ * <p>Includes personal/contact information, department association, license and
+ * optional biography and auditing timestamps.
+ */
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "doctors")
 public class Doctor {
 

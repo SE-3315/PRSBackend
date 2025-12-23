@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+/**
+ * Service responsible for user registration and authentication.
+ *
+ * <p>Creates user accounts and issues JWT tokens on successful login.
+ */
 @Service
 public class AuthService {
 
@@ -23,6 +28,12 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Registers a new user account.
+     *
+     * @param req the registration request containing email, password, name and role
+     * @throws IllegalArgumentException if email already exists
+     */
     @Transactional
     public void register(RegisterRequest req) {
         if (userRepository.existsByEmail(req.email())) {
@@ -33,6 +44,13 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    /**
+     * Authenticates a user and generates a JWT token.
+     *
+     * @param req the login request containing email and password
+     * @return an authentication response with access token and token type
+     * @throws NotFoundException if email is not found or password is invalid
+     */
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest req) {
         User user = userRepository.findByEmail(req.email())
@@ -40,7 +58,13 @@ public class AuthService {
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
             throw new NotFoundException("Invalid email or password");
         }
-        String token = jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(user.getEmail(), user.getRole());
         return new AuthResponse(token, "Bearer");
+    }
+
+    @Transactional(readOnly = true)
+    public User getCurrentUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 }

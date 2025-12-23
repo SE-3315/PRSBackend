@@ -3,6 +3,9 @@ package com.example.patientrecordsystem.dto;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Response DTO representing a patient visit.
+ */
 public record PatientVisitResponse(
         UUID id,
         UUID patientId,

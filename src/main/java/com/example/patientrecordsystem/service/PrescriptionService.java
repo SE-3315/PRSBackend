@@ -14,6 +14,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service responsible for managing prescriptions.
+ *
+ * <p>Supports creating, updating, retrieving, listing and deleting prescriptions.
+ */
 @Service
 public class PrescriptionService {
 
@@ -27,6 +32,13 @@ public class PrescriptionService {
         this.doctorService = doctorService;
     }
 
+    /**
+     * Creates a new prescription.
+     *
+     * @param req the prescription creation request with medication and patient/doctor details
+     * @return the created prescription response
+     * @throws NotFoundException if patient or doctor is not found
+     */
     @Transactional
     public PrescriptionResponse create(PrescriptionCreateOrUpdateRequest req) {
         Prescription p = new Prescription();
@@ -34,6 +46,14 @@ public class PrescriptionService {
         return toResponse(prescriptionRepository.save(p));
     }
 
+    /**
+     * Updates an existing prescription.
+     *
+     * @param id the prescription id
+     * @param req the prescription update request
+     * @return the updated prescription response
+     * @throws NotFoundException if prescription, patient or doctor is not found
+     */
     @Transactional
     public PrescriptionResponse update(UUID id, PrescriptionCreateOrUpdateRequest req) {
         Prescription p = prescriptionRepository.findById(id).orElseThrow(() -> new NotFoundException("Prescription not found"));
@@ -41,17 +61,35 @@ public class PrescriptionService {
         return toResponse(prescriptionRepository.save(p));
     }
 
+    /**
+     * Retrieves a prescription by id.
+     *
+     * @param id the prescription id
+     * @return the prescription response
+     * @throws NotFoundException if prescription is not found
+     */
     @Transactional(readOnly = true)
     public PrescriptionResponse get(UUID id) {
         return prescriptionRepository.findById(id).map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Prescription not found"));
     }
 
+    /**
+     * Lists all prescriptions.
+     *
+     * @return a list of all prescription responses
+     */
     @Transactional(readOnly = true)
     public List<PrescriptionResponse> list() {
         return prescriptionRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Deletes a prescription.
+     *
+     * @param id the prescription id
+     * @throws NotFoundException if prescription is not found
+     */
     @Transactional
     public void delete(UUID id) {
         if (!prescriptionRepository.existsById(id)) throw new NotFoundException("Prescription not found");
