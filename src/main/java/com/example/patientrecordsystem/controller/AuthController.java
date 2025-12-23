@@ -32,14 +32,22 @@ public class AuthController {
      * Registers a new user account.
      *
      * @param request the registration request
-     * @return an empty response with 200 status
+     * @return the created user information (without password)
      */
     @PostMapping("/register")
-    public ResponseEntity<?> register(
+    public ResponseEntity<UserResponse> register(
             @Valid @RequestBody RegisterRequest request
     ) {
-        authService.register(request);
-        return ResponseEntity.ok().build();
+        User user = authService.register(request);
+        UserResponse response = new UserResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getRole(),
+                user.getPhone()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     /**

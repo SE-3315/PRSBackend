@@ -32,16 +32,17 @@ public class AuthService {
      * Registers a new user account.
      *
      * @param req the registration request containing email, password, name and role
+     * @return the created user
      * @throws IllegalArgumentException if email already exists
      */
     @Transactional
-    public void register(RegisterRequest req) {
+    public User register(RegisterRequest req) {
         if (userRepository.existsByEmail(req.email())) {
             throw new IllegalArgumentException("Email already exists");
         }
         String hash = passwordEncoder.encode(req.password());
         User user = new User(req.email(), hash, req.firstName(), req.lastName(), req.role(), req.phone());
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     /**
