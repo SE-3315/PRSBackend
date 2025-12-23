@@ -9,4 +9,7 @@ import java.util.UUID;
 /**
  * Spring Data JPA repository for {@link com.example.patientrecordsystem.entity.PatientVisit} entities.
  */
-public interface PatientVisitRepository extends JpaRepository<PatientVisit, UUID> {}
+public interface PatientVisitRepository extends JpaRepository<PatientVisit, UUID> {
+    public void deleteByPatient_Id(UUID id);
+
+}

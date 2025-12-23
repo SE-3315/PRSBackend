@@ -16,8 +16,6 @@ import java.util.UUID;
  * <p>Stores department name, description, active flag and auditing timestamps.
  */
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "departments")
 public class Department {
@@ -25,6 +23,15 @@ public class Department {
         this.name = name;
         this.description = description;
         this.isActive = isActive;
+    }
+
+    public Department(UUID id, String name, String description, Boolean isActive, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isActive = isActive;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     @Id @GeneratedValue

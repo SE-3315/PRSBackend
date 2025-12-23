@@ -14,8 +14,6 @@ import java.util.UUID;
  * <p>Holds record type, description, attachments and references to patient and doctor.
  */
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "medical_records")
 public class MedicalRecord {

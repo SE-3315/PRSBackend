@@ -19,8 +19,6 @@ import java.util.UUID;
  */
 @Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "doctors")
 public class Doctor {
 
