@@ -16,8 +16,6 @@ import java.util.UUID;
  * status and a textual reason. Auditing timestamps are captured for creation and update.
  */
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "appointments")
 public class Appointment {

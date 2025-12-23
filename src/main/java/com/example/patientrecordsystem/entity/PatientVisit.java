@@ -14,8 +14,6 @@ import java.util.UUID;
  * <p>Stores visit timestamp, symptoms, diagnosis, treatment plan and related notes.
  */
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "patient_visits")
 public class PatientVisit {

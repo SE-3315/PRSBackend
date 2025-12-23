@@ -95,6 +95,11 @@ public class MedicalRecordService {
         recordRepository.deleteById(id);
     }
 
+    @Transactional
+    public void deleteByPatientId(UUID patientID) {
+        recordRepository.deleteByPatient_Id(patientID);
+    }
+
     private void apply(MedicalRecord r, MedicalRecordCreateOrUpdateRequest req) {
         Patient patient = patientService.require(req.patientId());
         Doctor doctor = doctorService.require(req.doctorId());
